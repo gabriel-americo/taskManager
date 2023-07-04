@@ -24,7 +24,7 @@ namespace TaskManager.API.Data.Repositories
 
         public void Update(string id, Task taskupdate)
         {
-            _task.ReplaceOne(task => task.Id == id, taskupdate);
+            _task.ReplaceOne(t => t.Id == id, taskupdate);
         }
 
         public IEnumerable<Task> GetAllTask()
@@ -34,12 +34,12 @@ namespace TaskManager.API.Data.Repositories
 
         public Task GetOneTask(string id)
         {
-            return _task.Find(task => task.Id == id).FirstOrDefault();
+            return _task.Find(t => t.Id == id).FirstOrDefault();
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
-
+            _task.DeleteOne(t => t.Id == id);
         }
     }
 }

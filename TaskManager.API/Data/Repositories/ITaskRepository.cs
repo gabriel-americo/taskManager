@@ -5,10 +5,10 @@ namespace TaskManager.API.Data.Repositories
 {
     public interface ITaskRepository
     {
-        void Add(Task task);
+        void Add(Task newTask);
         void Update(string id, Task taskupdate);
         IEnumerable<Task> GetAllTask();
         Task GetOneTask(string id);
-        void Delete(int id);
+        void Delete(string id);
     }
 }

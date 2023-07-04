@@ -20,5 +20,13 @@ namespace TaskManager.API.Models
         public bool Finished { get; private set; }
         public DateTime DateRegistration { get; private set; }
         public DateTime? DateFinished { get; private set; }
+
+        public void UpdateTask(string name, string description, bool? finished)
+        {
+            Name = name;
+            Description = description;
+            Finished = finished ?? false;
+            DateFinished = Finished ? DateTime.Now : null;
+        }
     }
 }

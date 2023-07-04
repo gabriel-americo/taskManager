@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskManager.API.Data.Repositories;
+using TaskManager.API.Models;
+using TaskManager.API.Models.InputModels;
 
 namespace TaskManager.API.Controllers
 {
@@ -7,7 +9,6 @@ namespace TaskManager.API.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-
         private ITaskRepository _taskrepository;
 
         public TaskController(ITaskRepository taskrepository)
@@ -35,22 +36,43 @@ namespace TaskManager.API.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] TaskInputModel newTask)
         {
+            var task = new Task(newTask.Name, newTask.Description);
 
+            _taskrepository.Add(task);
+
+            return Created("", task);
         }
 
         [HttpPut("{id}")]
-        public void Put(string id, [FromBody] string value)
+        public IActionResult Put(string id, [FromBody] TaskInputModel updateTask)
         {
+            var task = _taskrepository.GetOneTask(id);
+
+            if (task == null)
+                return NotFound();
+
+            task.UpdateTask(updateTask.Name, updateTask.Description, updateTask.Finished);
+
+            _taskrepository.Update(id, task);
+
+            return Ok(task);
 
         }
 
         // DELETE api/<TaskController>/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public IActionResult Delete(string id)
         {
+            var task = _taskrepository.GetOneTask(id);
 
+            if (task == null)
+                return NotFound();
+
+            _taskrepository.Delete(id);
+
+            return NoContent();
         }
     }
 }
